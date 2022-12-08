@@ -1,0 +1,60 @@
+
+OPEN #2,4,0,"D:4DATA.TXT"
+
+L=1
+T$=""
+PAIRS=0
+
+REPEAT
+ 
+ INPUT #2,LINE$
+ ? "WORKING ON LINE: ";STR$(L);" ";LINE$
+
+ . GET ELF 1 MIN AND MAX
+
+ C=1
+
+ DEL$="-"
+ @SPLIT 
+ E1MIN=VAL(T$)
+ 
+ DEL$=","
+ @SPLIT
+ E1MAX=VAL(T$)
+
+ . GET ELF 2 MIN AND MAX
+ DEL$="-"
+ @SPLIT 
+ E2MIN=VAL(T$)
+ 
+ E2MAX=VAL(LINE$[C])
+
+ ? "ELF 1: ";STR$(E1MIN);"|";STR$(E1MAX)
+ ? "ELF 2: ";STR$(E2MIN);"|";STR$(E2MAX)
+
+ FOR X=E1MIN TO E1MAX
+ IF X>=E2MIN AND X<=E2MAX
+  INC PAIRS
+  ? "FOUND OVERLAP!"
+  EXIT
+ ENDIF
+ NEXT X
+  
+ INC L
+UNTIL L>1000
+
+? "WE FOUND ";STR$(PAIRS);" NUMBER OF OVERLAPS"
+
+
+PROC SPLIT
+ T$=""
+ SC$=LINE$[C,1]
+ WHILE SC$<>DEL$
+  T$=+SC$
+  INC C
+  SC$=LINE$[C,1]
+  .? SC$;" ";
+ WEND
+ INC C
+ENDPROC
+

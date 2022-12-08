@@ -1,0 +1,57 @@
+DIM P(122)
+
+.SDMCTL=PEEK(559)
+.POKE 559,0
+
+
+.SET UP POINTS FOR PRIORITY
+Y=1
+FOR X=97 TO 122
+  P(X)=Y
+  P(X-32)=Y+26
+  INC Y
+NEXT X
+
+OPEN #1,4,0,"D:RUCKSACK.TXT"
+
+L=1
+T=0
+G=1
+
+REPEAT
+ ? "WORKING ON GROUP: ";STR$(G)
+  FOUND=0
+  INPUT #1,L1$
+  INPUT #1,L2$
+  INPUT #1,L3$
+
+  FOR X=1 TO LEN(L1$)
+   B$=L1$[X,1]
+   FOR Y=1 TO LEN(L2$)
+    IF L2$[Y,1]=B$
+     FOR Z=1 TO LEN(L3$)
+      IF L3$[Z,1]=B$ AND FOUND=0
+       ? "FOUND IT!"
+       T=T+P(ASC(B$))
+       FOUND=1
+      ENDIF
+     NEXT Z
+    ENDIF
+   NEXT Y
+  NEXT X
+  L=L+3  
+  INC G
+
+UNTIL L>300
+
+CLOSE #1
+
+.POKE 559,SDMCTL
+
+? "TOTAL: ";STR$(T)
+
+PROC ERROR
+ ? "ERROR! LINE: ";STR$(L)
+
+ENDPROC
+
