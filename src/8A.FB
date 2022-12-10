@@ -1,0 +1,62 @@
+. DAY 8 - TREETOP TREE HOUSE 2022-12-08
+FILE$="D:8SAMP.TXT"
+W=5
+H=5
+
+DIM R$(100)
+
+OPEN #1,4,0,FILE$
+
+FOR X=1 TO H
+ INPUT #1,R$(X)
+NEXT X
+
+VISIBLETOTAL=(2*W)+(2*H)-4
+.VISIBLETOTAL=0
+
+FOR X=2 TO H-1
+
+ ROW$=R$(X)
+ ?ROW$
+ FOR Y=2 TO W-1
+  TREE=VAL(ROW$[Y,1])
+  UP=0:DO=0:LE=0:RI=0
+
+  FOR QX=1 TO H
+   TR$=R$(QX)
+   CT=VAL(TR$[Y,1])
+   ?STR$(QX);" TREE:";STR$(TREE);" TEST X:";STR$(CT)
+   IF CT>=TREE
+    IF QX<X
+     UP=1
+    ELIF QX>X
+     DO=1
+    ENDIF
+   ENDIF
+  NEXT QX
+
+  FOR QY=1 TO W
+   CT=VAL(ROW$[QY,1])
+   ?STR$(QY);" TREE:";STR$(TREE);" TEST Y:";STR$(CT)
+   IF CT>=TREE
+    IF QY<Y
+     LE=1
+    ELIF QY>Y
+     RI=1
+    ENDIF
+   ENDIF
+  NEXT QY
+
+  IF UP=0 OR DO=0 OR LE=0 OR RI=0
+   ? "TREE ";STR$(X);" BY ";STR$(Y);" VISIBLE"
+   INC VISIBLETOTAL
+  ELSE
+   ? "TREE ";STR$(X);" BY ";STR$(Y);" NOT VISIBLE"
+  ENDIF
+
+ NEXT Y
+
+NEXT X
+
+? "VISIBILE TOTAL: ";STR$(VISIBLETOTAL)
+

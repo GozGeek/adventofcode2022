@@ -1,0 +1,84 @@
+. DAY 8 - TREETOP TREE HOUSE 2022-12-08
+FILE$="D:8DATA.TXT"
+W=99
+H=99
+
+DIM R$(100)
+
+OPEN #1,4,0,FILE$
+
+FOR X=1 TO H
+ INPUT #1,R$(X)
+NEXT X
+
+SCENIC%=0
+
+FOR X=2 TO H-1
+ ? "WORKING ON ROW: ";STR$(X)
+ ROW$=R$(X)
+ .?ROW$
+ FOR Y=2 TO W-1
+  TREE=VAL(ROW$[Y,1])
+  TV%=0
+
+  .VIEWS UP
+  FOR T=X-1 TO 1 STEP -1
+   TR$=R$(T):CT=VAL(TR$[Y,1])
+   IF CT<TREE
+    TV%=TV%+1
+   ELSE
+    TV%=TV%+1
+    EXIT
+   ENDIF
+  NEXT T
+  UP%=TV%
+  TV%=0
+
+  .VIEWS DOWN
+  FOR T=X+1 TO H
+
+   TR$=R$(T):CT=VAL(TR$[Y,1])
+   IF CT<TREE
+    TV%=TV%+1
+   ELSE
+    TV%=TV%+1
+    EXIT
+   ENDIF
+  NEXT T
+  DO%=TV%
+  TV%=0
+
+  .VIEWS LEFT
+  FOR T=Y-1 TO 1 STEP -1
+   TR$=R$(X):CT=VAL(TR$[T,1])
+   IF CT<TREE
+    TV%=TV%+1
+   ELSE
+    TV%=TV%+1
+    EXIT
+   ENDIF
+  NEXT T
+  LE%=TV%
+  TV%=0
+
+  .VIEWS RIGHT
+  FOR T=Y+1 TO W
+   TR$=R$(X):CT=VAL(TR$[T,1])
+   IF CT<TREE
+    TV%=TV%+1
+   ELSE
+    TV%=TV%+1
+    EXIT
+   ENDIF
+  NEXT T
+  RI%=TV%
+
+  .? STR$(UP%);" ";STR$(DO%);" ";STR$(LE%);" ";STR$(RI%)
+  VIEW%=UP%*DO%*LE%*RI%
+  IF VIEW%>SCENIC% THEN SCENIC%=VIEW%
+ NEXT Y
+
+NEXT X
+
+? "MAX SCENIC SCORE: ";STR$(SCENIC%)
+
